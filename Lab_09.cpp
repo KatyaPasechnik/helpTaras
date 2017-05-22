@@ -17,26 +17,31 @@ struct MeshBud
 
 void funk(MeshBud mas, char *sur)
 {
-	if (strcmp(mas.surname, sur) == 0)
+	if (_stricmp(mas.surname, sur) == 0)
 	{
-		cout << mas.surname << endl;
-		cout << mas.work << endl;
-		cout << mas.rik << endl;
+		cout << "Фалимия: " << mas.surname << endl;
+		cout << "Место работы: " << mas.work << endl;
+		cout << "Год рождения: " <<mas.rik << endl;
 	}
 }
 
 	int main()
 {
 		setlocale(LC_ALL, "rus");
-	/*	int size;
-		cout << "Vvedite kol."; cin >> size;
+		int size;
+		cout << "Введите количество людей: "; cin >> size;
 		MeshBud *mas = new MeshBud[size];
 
 		for (int i = 0; i < size; i++)
 		{
-			cout << "surname:(30 simv) "; cin >> mas[i].surname;
-			cout << "Work:(30 simv) "; cin >> mas[i].work;
-			cout << "Rik: "; cin >> mas[i].rik;
+			cout << "Введите фамилию(до 30 символов, только Англ буквами): "; cin >> mas[i].surname;
+			cout << "Введите место работы(до 30 символов, только Англ буквами): "; cin >> mas[i].work;
+			cout << "Введите год рождения: "; cin >> mas[i].rik;
+			while (mas[i].rik > 2017 || mas[i].rik <= 0)
+			{
+				cout << "Вы ввели неправильно год, введите год в промежутке от 0 до 2017" << endl;
+				cout << "Введите год рождения: "; cin >> mas[i].rik;
+			}
 		}
 
 		ofstream fout("data.dat", ios::out | ios::binary);
@@ -44,25 +49,36 @@ void funk(MeshBud mas, char *sur)
 		{
 			fout.write((char*)&mas[i], sizeof(MeshBud));
 		}
-		fout.close();*/
+		fout.close();
+		delete[] mas;
 
+		cout << endl;
 		MeshBud mass [50];
 		ifstream fin("data.dat", ios::in | ios::binary);
-		int index = 0;
-  		for (int i = 0; fin.peek() != EOF; i++)
+		if (!fin)
 		{
-			fin.read((char*)&mass[i], sizeof(MeshBud));
-			index++;
+			 cout << "Ошибка при открытии файла " << endl;
+			 exit(0);
 		}
-		fin.close();
-
-		char sur[1024];
-		cin >> sur;
-		for (int i = 0; i < index; i++)
+		else
 		{
-			funk(mass[i], sur);
+			cout << "Идет считывание с файла..." << endl;
+			int index = 0;
+			for (int i = 0; fin.peek() != EOF; i++)
+			{
+				fin.read((char*)&mass[i], sizeof(MeshBud));
+				index++;
+			}
+			fin.close();
+			cout << "Введите фамилию для поиска информации: ";
+			char sur[30];
+			cin >> sur;
+			for (int i = 0; i < index; i++)
+			{
+				funk(mass[i], sur);
+			}
+			system("pause");
+			return 0;
 		}
-		system("pause");
-		return 0;
 }
 
